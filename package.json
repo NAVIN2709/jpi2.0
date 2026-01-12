@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "name": "math-animation-renderer",
+  "version": "1.0.0",
+  "description": "MathJax to Canvas Animation Renderer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "render": "node index.js"
+  },
+  "dependencies": {
+    "@mathjax/src": "^4.1.0",
+    "@napi-rs/canvas": "^0.1.88",
+    "@resvg/resvg-js": "^2.6.2",
+    "@xmldom/xmldom": "^0.9.8",
+    "canvg": "^4.0.3",
+    "ffmpeg-static": "^5.3.0",
+    "katex": "^0.16.27",
+    "mathjax-node": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
