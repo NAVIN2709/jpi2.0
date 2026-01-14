@@ -11,6 +11,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import axios from "axios";
 import { GoogleGenAI } from "@google/genai";
 import { SYSTEM_PROMPT } from "./prompt.js";
+import { processVoiceovers } from "./voice.js";
 
 dotenv.config();
 
@@ -90,7 +91,7 @@ async function openAIProvider(messages) {
   if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI key missing");
 
   const r = await openai.chat.completions.create({
-    model: "gpt-4.1",
+    model: "gpt-4o-mini",
     temperature: 0.2,
     messages,
   });
@@ -186,9 +187,19 @@ async function openRouterProvider(messages) {
 }
 
 /* ================== RENDERER ================== */
-function runRenderer() {
+function runRenderer(audioPath = null) {
   return new Promise((resolve, reject) => {
-    const p = spawn("node", ["renderer.js"], { stdio: "inherit" });
+    // Pass audio path as environment variable
+    const env = { ...process.env };
+    if (audioPath) {
+      env.AUDIO_PATH = audioPath;
+    }
+
+    const p = spawn("node", ["renderer.js"], { 
+      stdio: "inherit",
+      env
+    });
+
     p.on("close", code =>
       code === 0 ? resolve() : reject(new Error("Renderer failed"))
     );
@@ -204,35 +215,72 @@ async function uploadVideo() {
 /* ================== MAIN ENDPOINT ================== */
 app.post("/generate", upload.single("image"), async (req, res) => {
   try {
-    const prompt = req.body.prompt || "Generate physics animation";
+    // const prompt = req.body.prompt || "Generate physics animation";
 
-    const messages = [{ role: "system", content: SYSTEM_PROMPT }];
+    // console.log(`\n${'='.repeat(60)}`);
+    // console.log('🚀 PHYSICS ANIMATION GENERATION STARTED');
+    // console.log(`${'='.repeat(60)}\n`);
 
-    if (req.file) {
-      const base64 = fs.readFileSync(req.file.path, "base64");
-      messages.push({
-        role: "user",
-        content: [
-          { type: "text", text: prompt },
-          {
-            type: "image_url",
-            image_url: `data:image/png;base64,${base64}`,
-          },
-        ],
-      });
-    } else {
-      messages.push({ role: "user", content: prompt });
+    // const messages = [{ role: "system", content: SYSTEM_PROMPT }];
+
+    // if (req.file) {
+    //   const base64 = fs.readFileSync(req.file.path, "base64");
+    //   messages.push({
+    //     role: "user",
+    //     content: [
+    //       { type: "text", text: prompt },
+    //       {
+    //         type: "image_url",
+    //         image_url: `data:image/png;base64,${base64}`,
+    //       },
+    //     ],
+    //   });
+    // } else {
+    //   messages.push({ role: "user", content: prompt });
+    // }
+
+    // // ===== STEP 1: Generate JSON =====
+    // console.log(`\n📋 STEP 1: Generating Scene JSON...`);
+    // const jsonText = await generateJSON(messages);
+    // fs.writeFileSync("scene.json", jsonText);
+    console.log(`✅ Scene JSON generated\n`);
+
+    // ===== STEP 2: Generate Voiceovers =====
+    console.log(`\n🎤 STEP 2: Generating Voiceovers...`);
+    let audioPath = null;
+    try {
+      const voiceResult = await processVoiceovers("scene.json");
+      if (voiceResult && voiceResult.audioPath) {
+        audioPath = voiceResult.audioPath;
+        console.log(`✅ Voiceovers generated: ${audioPath}\n`);
+      }
+    } catch (voiceError) {
+      console.warn(`⚠️ Voiceover generation skipped: ${voiceError.message}\n`);
+      console.log(`Continuing without voiceover...\n`);
     }
 
-    const jsonText = await generateJSON(messages);
-    fs.writeFileSync("scene.json", jsonText);
+    // ===== STEP 3: Render Video =====
+    console.log(`\n🎨 STEP 3: Rendering Video...`);
+    await runRenderer(audioPath);
+    console.log(`✅ Video rendered\n`);
 
-    await runRenderer();
+    // ===== STEP 4: Upload to Cloudinary =====
+    console.log(`\n📤 STEP 4: Uploading to Cloudinary...`);
     const uploaded = await uploadVideo();
+    console.log(`✅ Video uploaded\n`);
 
+    // Cleanup
     if (req.file) fs.unlinkSync(req.file.path);
 
-    res.json({ success: true, videoUrl: uploaded.secure_url });
+    console.log(`${'='.repeat(60)}`);
+    console.log('✨ GENERATION COMPLETE');
+    console.log(`${'='.repeat(60)}\n`);
+
+    res.json({ 
+      success: true, 
+      videoUrl: uploaded.secure_url,
+      hasAudio: !!audioPath
+    });
   } catch (err) {
     console.error("❌ ERROR:", err);
     res.status(500).json({ error: err.message });

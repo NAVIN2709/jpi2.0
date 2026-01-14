@@ -1,3 +1,421 @@
 {
-  "error": "Cannot generate scene.json"
+  "phases": [
+    {
+      "name": "Problem Setup",
+      "time": [0, 12],
+      "voiceover": "We need to find the moment of inertia of a uniform rod about its center, perpendicular to its length. The formula is I equals one-twelfth M L squared, where M is the mass and L is the length of the rod.",
+      "objects": [
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -3.5,
+            "y": 0,
+            "width": 4,
+            "height": 0.3,
+            "color": "#ff6b6b",
+            "fill": true
+          },
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        },
+        {
+          "type": "circle",
+          "params": {
+            "x": -3.5,
+            "y": 0,
+            "radius": 0.12,
+            "color": "#ffd93d",
+            "fill": true
+          },
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        },
+        {
+          "type": "line",
+          "params": {
+            "x1": -3.5,
+            "y1": -1,
+            "x2": -3.5,
+            "y2": 1,
+            "color": "#45b7d1",
+            "lineWidth": 2
+          },
+          "fadeIn": {"start": 1, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        }
+      ],
+      "text": [
+        {
+          "value": "Uniform Rod: Moment of Inertia",
+          "x": 0,
+          "y": 3.2,
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        },
+        {
+          "value": "About center, perpendicular axis",
+          "x": 0,
+          "y": 2.5,
+          "size": 22,
+          "color": "#cccccc",
+          "align": "center",
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        }
+      ],
+      "math": [
+        {
+          "latex": "\\alpha = \\frac{1}{12} M L^2",
+          "x": 3,
+          "y": 1.2,
+          "color": "#ffd93d",
+          "targetHeight": 60,
+          "fadeIn": {"start": 1.5, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        },
+        {
+          "latex": "\\text{Mass: } M, \\quad \\text{Length: } L",
+          "x": 3,
+          "y": 0,
+          "color": "#00ffcc",
+          "targetHeight": 50,
+          "fadeIn": {"start": 2, "duration": 0.5},
+          "fadeOut": {"start": 10.5, "duration": 1.5}
+        }
+      ]
+    },
+    {
+      "name": "Step 1: Cut & Arrange",
+      "time": [12, 28],
+      "voiceover": "Now we cut the rod into two equal halves and arrange them perpendicular to each other at the center, forming a cross shape. Each half has mass M over 2 and length L over 2. Using the moment of inertia formula for each half, we get I equals one ninety-sixth M L squared.",
+      "objects": [
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -4.5,
+            "y": 0.6,
+            "width": 2,
+            "height": 0.3,
+            "color": "#ff6b6b",
+            "fill": true
+          },
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -4.5,
+            "y": -0.6,
+            "width": 2,
+            "height": 0.3,
+            "color": "#00ffcc",
+            "fill": true
+          },
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "circle",
+          "params": {
+            "x": -4.5,
+            "y": 0.6,
+            "radius": 0.1,
+            "color": "#ffd93d",
+            "fill": true
+          },
+          "fadeIn": {"start": 1, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "circle",
+          "params": {
+            "x": -4.5,
+            "y": -0.6,
+            "radius": 0.1,
+            "color": "#ffd93d",
+            "fill": true
+          },
+          "fadeIn": {"start": 1, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -2,
+            "y": 0,
+            "width": 2,
+            "height": 0.3,
+            "color": "#ff6b6b",
+            "fill": true,
+            "angle": 0
+          },
+          "fadeIn": {"start": 2, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -2,
+            "y": 0,
+            "width": 2,
+            "height": 0.3,
+            "color": "#00ffcc",
+            "fill": true,
+            "angle": 90
+          },
+          "fadeIn": {"start": 2.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "circle",
+          "params": {
+            "x": -2,
+            "y": 0,
+            "radius": 0.12,
+            "color": "#ffd93d",
+            "fill": true
+          },
+          "fadeIn": {"start": 3, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "line",
+          "params": {
+            "x1": -2,
+            "y1": -1.2,
+            "x2": -2,
+            "y2": 1.2,
+            "color": "#45b7d1",
+            "lineWidth": 2
+          },
+          "fadeIn": {"start": 3.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "type": "arc",
+          "params": {
+            "x": -2,
+            "y": 0,
+            "radius": 0.5,
+            "startAngle": 0,
+            "endAngle": 1.5708,
+            "color": "#ffff00",
+            "lineWidth": 2
+          },
+          "fadeIn": {"start": 3, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        }
+      ],
+      "text": [
+        {
+          "value": "Cut & Arrange Perpendicular",
+          "x": 0,
+          "y": 3.2,
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "value": "Two halves joined at center, 90°",
+          "x": 0,
+          "y": 2.5,
+          "size": 22,
+          "color": "#cccccc",
+          "align": "center",
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        }
+      ],
+      "math": [
+        {
+          "latex": "\\text{Each half:} \\quad m = \\frac{M}{2}, \\quad l = \\frac{L}{2}",
+          "x": 3,
+          "y": 1.5,
+          "color": "#00ffcc",
+          "targetHeight": 55,
+          "fadeIn": {"start": 1.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "latex": "I_{\\text{one}} = \\frac{1}{12} m l^2 = \\frac{1}{12} \\cdot \\frac{M}{2} \\cdot \\left(\\frac{L}{2}\\right)^2",
+          "x": 3,
+          "y": 0.3,
+          "color": "#00ffff",
+          "targetHeight": 70,
+          "fadeIn": {"start": 2.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        },
+        {
+          "latex": "I_{\\text{one}} = \\frac{1}{96} M L^2",
+          "x": 3,
+          "y": -0.9,
+          "color": "#ffd93d",
+          "targetHeight": 55,
+          "fadeIn": {"start": 3.5, "duration": 0.5},
+          "fadeOut": {"start": 15, "duration": 1}
+        }
+      ]
+    },
+    {
+      "name": "Step 2: Total Inertia",
+      "time": [28, 45],
+      "voiceover": "For the complete cross configuration, we sum the moments of inertia of both perpendicular rods. The total inertia equals I one plus I two, which is one ninety-sixth M L squared plus one ninety-sixth M L squared. This simplifies to one forty-eighth M L squared.",
+      "objects": [
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -3.5,
+            "y": 0,
+            "width": 2,
+            "height": 0.3,
+            "color": "#ff6b6b",
+            "fill": true,
+            "angle": 0
+          },
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        },
+        {
+          "type": "rectangle",
+          "params": {
+            "x": -3.5,
+            "y": 0,
+            "width": 2,
+            "height": 0.3,
+            "color": "#00ffcc",
+            "fill": true,
+            "angle": 90
+          },
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        },
+        {
+          "type": "line",
+          "params": {
+            "x1": -3.5,
+            "y1": -1.3,
+            "x2": -3.5,
+            "y2": 1.3,
+            "color": "#45b7d1",
+            "lineWidth": 2
+          },
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        }
+      ],
+      "text": [
+        {
+          "value": "Cross: Total Moment of Inertia",
+          "x": 0,
+          "y": 3.2,
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        },
+        {
+          "value": "Sum of both perpendicular halves",
+          "x": 0,
+          "y": 2.5,
+          "size": 22,
+          "color": "#cccccc",
+          "align": "center",
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        }
+      ],
+      "math": [
+        {
+          "latex": "I_{\\text{cross}} = I_1 + I_2",
+          "x": 3,
+          "y": 1.5,
+          "color": "#ffd93d",
+          "targetHeight": 50,
+          "fadeIn": {"start": 1, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        },
+        {
+          "latex": "= \\frac{1}{96} M L^2 + \\frac{1}{96} M L^2",
+          "x": 3,
+          "y": 0.5,
+          "color": "#00ffff",
+          "targetHeight": 60,
+          "fadeIn": {"start": 1.8, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        },
+        {
+          "latex": "= \\frac{2}{96} M L^2 = \\frac{1}{48} M L^2",
+          "x": 3,
+          "y": -0.5,
+          "color": "#00ffff",
+          "targetHeight": 60,
+          "fadeIn": {"start": 2.8, "duration": 0.5},
+          "fadeOut": {"start": 16, "duration": 1}
+        }
+      ]
+    },
+    {
+      "name": "Final Answer",
+      "time": [45, 60],
+      "voiceover": "In conclusion, the moment of inertia of the original rod about its center is one twelfth M L squared. The moment of inertia of the cross configuration is one forty-eighth M L squared. Taking the ratio, we find that the cross inertia equals one quarter of the original rod inertia.",
+      "objects": [],
+      "text": [
+        {
+          "value": "Moment of Inertia: Original vs Cross",
+          "x": 0,
+          "y": 3.2,
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "fadeIn": {"start": 0, "duration": 0.5},
+          "fadeOut": {"start": 14.5, "duration": 0.5}
+        }
+      ],
+      "math": [
+        {
+          "latex": "\\alpha = \\frac{1}{12} M L^2",
+          "x": 0,
+          "y": 2,
+          "color": "#ffd93d",
+          "targetHeight": 60,
+          "fadeIn": {"start": 0.5, "duration": 0.5},
+          "fadeOut": {"start": 14.5, "duration": 0.5}
+        },
+        {
+          "latex": "I_{\\text{cross}} = \\frac{1}{48} M L^2",
+          "x": 0,
+          "y": 0.8,
+          "color": "#00ff99",
+          "targetHeight": 60,
+          "fadeIn": {"start": 1, "duration": 0.5},
+          "fadeOut": {"start": 14.5, "duration": 0.5}
+        },
+        {
+          "latex": "\\frac{I_{\\text{cross}}}{\\alpha} = \\frac{\\frac{1}{48}}{\\frac{1}{12}} = \\frac{1}{48} \\times 12 = \\frac{1}{4}",
+          "x": 0,
+          "y": -0.6,
+          "color": "#ffff00",
+          "targetHeight": 75,
+          "fadeIn": {"start": 1.8, "duration": 0.5},
+          "fadeOut": {"start": 14.5, "duration": 0.5}
+        },
+        {
+          "latex": "\\boxed{I_{\\text{cross}} = \\frac{\\alpha}{4}}",
+          "x": 0,
+          "y": -2,
+          "color": "#00ff99",
+          "targetHeight": 85,
+          "fadeIn": {"start": 3, "duration": 0.5},
+          "fadeOut": {"start": 14.5, "duration": 0.5}
+        }
+      ]
+    }
+  ]
 }

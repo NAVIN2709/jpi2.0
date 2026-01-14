@@ -656,6 +656,49 @@ function renderFrame(t) {
     }
   }
 }
+function mergeAudioWithVideo(videoPath, audioPath) {
+  return new Promise((resolve, reject) => {
+    console.log(`\n🔊 Merging audio with video...`);
+    console.log(`   Video: ${videoPath}`);
+    console.log(`   Audio: ${audioPath}`);
+
+    const ffmpeg = spawn(ffmpegPath, [
+      "-i", videoPath,
+      "-i", audioPath,
+      "-c:v", "copy",
+      "-c:a", "aac",
+      "-b:a", "128k",
+      "-shortest",
+      "-y",
+      "output_with_audio.mp4"
+    ]);
+
+    let errorOutput = '';
+
+    ffmpeg.stderr.on('data', (data) => {
+      errorOutput += data.toString();
+      if (data.toString().includes('frame=')) {
+        process.stdout.write(`\r${data.toString().trim().substring(0, 80)}`);
+      }
+    });
+
+    ffmpeg.on("close", (code) => {
+      console.log('\n');
+      if (code === 0) {
+        console.log(`✅ Audio merged: output_with_audio.mp4`);
+        // Replace original with merged version
+        fs.renameSync("output_with_audio.mp4", "output.mp4");
+        resolve();
+      } else {
+        reject(new Error(`FFmpeg merge failed: ${errorOutput}`));
+      }
+    });
+
+    ffmpeg.on('error', (error) => {
+      reject(new Error(`FFmpeg process error: ${error.message}`));
+    });
+  });
+}
 
 // FFMPEG RAW PIPE
 const ffmpeg = spawn(ffmpegPath, [
@@ -724,7 +767,7 @@ ffmpeg.on("close", (code) => {
     });
   }
 
-  console.log(`📐 Pre-rendering ${mathExpressions.size} math expressions...\n`);
+   console.log(`📐 Pre-rendering ${mathExpressions.size} math expressions...\n`);
   await Promise.all(
     Array.from(mathExpressions.values()).map((m) =>
       renderMathToSVG(m.latex, m.color, m.targetHeight)
@@ -757,9 +800,27 @@ ffmpeg.on("close", (code) => {
   }
 
   ffmpeg.stdin.end();
+
+  // Wait for FFmpeg to finish rendering
+  await new Promise((resolve) => {
+    ffmpeg.on("close", resolve);
+  });
+
   const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
-  console.log(`\n✅ Rendering complete in ${totalTime}s`);
-  console.log(
-    `⏱️ Processing speed: ${(CONFIG.totalFrames / totalTime).toFixed(1)} fps`
-  );
+  console.log(`✅ Video rendering complete in ${totalTime}s`);
+  console.log(`⏱️ Processing speed: ${(CONFIG.totalFrames / totalTime).toFixed(1)} fps\n`);
+
+  // Merge audio if provided
+  const audioPath = process.env.AUDIO_PATH;
+  if (audioPath && fs.existsSync(audioPath)) {
+    try {
+      await mergeAudioWithVideo("output.mp4", audioPath);
+      console.log(`\n✅ Final output: output_with_audio.mp4 (with narration)`);
+    } catch (error) {
+      console.error(`⚠️ Audio merge failed: ${error.message}`);
+      console.log(`\n✅ Final output: output.mp4 (video only)`);
+    }
+  } else {
+    console.log(`\n✅ Final output: output.mp4 (video only)`);
+  }
 })();
